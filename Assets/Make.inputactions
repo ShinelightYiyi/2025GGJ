@@ -1,0 +1,74 @@
+{
+    "name": "Make",
+    "maps": [
+        {
+            "name": "Prepare",
+            "id": "858782a0-a46e-452d-93be-d794737a2863",
+            "actions": [
+                {
+                    "name": "blow",
+                    "type": "Button",
+                    "id": "32965513-47ff-48d0-949e-7c2b14ebcb07",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "moveup",
+                    "type": "Button",
+                    "id": "76c79878-177e-4a46-99fe-8e7c10be3890",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "movedown",
+                    "type": "Button",
+                    "id": "69f125aa-6d41-4f9b-aee9-9351c1465b73",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "0ec595dd-7179-4370-8e3f-f2048176874c",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "blow",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "586c8237-91b4-46cc-ac57-83bf752c649e",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "moveup",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b752af0d-3ba3-452a-8c25-e7c6ebf6ae52",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "movedown",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
