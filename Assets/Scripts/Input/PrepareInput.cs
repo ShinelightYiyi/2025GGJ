@@ -15,7 +15,7 @@ public class PrepareInput : MonoBehaviour
     public int numOfMaterial {  get; private set; }
     [SerializeField] protected RectTransform Square;//将蘸取量体现在长条里
 
-    private float[] ratio = new float[3];//记录每个材料的含量
+    public float[] ratio = new float[3];//记录每个材料的含量
 
     public float sumoftime;
     private float time;
