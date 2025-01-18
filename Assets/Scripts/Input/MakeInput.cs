@@ -9,6 +9,7 @@ public class MakeInput : MonoBehaviour
 {
     private MakeInput makeInput;
 
+    [Header("Inhale Info")]
     [SerializeField]private float maxAir;
     private float currentAir;
     [SerializeField] private float proportion;//时间与空气之比
@@ -16,10 +17,14 @@ public class MakeInput : MonoBehaviour
     private bool isInhaled;
     [SerializeField] private GameObject sprite;//两个半圆弧？
 
+    [Header("Blow Info")]
     [SerializeField] private float moveSpeed = 1f;
     [SerializeField] private GameObject tool;
     private float distance;
     [SerializeField] private GameObject mouth;
+
+    [SerializeField] private ParticleSystem bubble;
+    private bool isBlowing;
 
     private PrepareInput lastInput;
 
@@ -28,6 +33,8 @@ public class MakeInput : MonoBehaviour
         makeInput = GetComponent<MakeInput>();
         lastInput =GameObject.Find("PrepareInput").GetComponent<PrepareInput>();
         isInhaled = false;
+        isBlowing = false;
+        bubble.Stop();
     }
     void Update()
     {
@@ -43,6 +50,11 @@ public class MakeInput : MonoBehaviour
     {
         if (Keyboard.current.spaceKey.isPressed)
         {
+            if (!isBlowing)
+            {
+                isBlowing=true;
+                MakeBubble();
+            }
             time += Time.deltaTime;
             currentAir = time /proportion;
 
@@ -63,6 +75,7 @@ public class MakeInput : MonoBehaviour
     {
         if (Keyboard.current.spaceKey.isPressed)
         {
+
             time += Time.deltaTime;
             currentAir -= time /proportion;
             if(currentAir <= 0)//没气就不准吹了
@@ -91,5 +104,11 @@ public class MakeInput : MonoBehaviour
     void SpriteScaled()//准备写半圆弧缩放，变化速度直接用time操控，和proportion分离开
     {
 
+    }
+
+    void MakeBubble()
+    {
+        if(isBlowing) bubble.Play();
+        else bubble.Stop();
     }
 }
