@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class PrepareInput : MonoBehaviour
 {
@@ -30,6 +31,7 @@ public class PrepareInput : MonoBehaviour
     [SerializeField] private GameObject tool;
     private bool isMoving;
 
+
     void Start()
     {
         prepareInput = GetComponent<PrepareInput>();//获取玩家键盘输入
@@ -52,7 +54,7 @@ public class PrepareInput : MonoBehaviour
         }
         BottleChoose(obj[numOfMaterial]);
         isMoving = false;
-        tool.transform.position = new Vector3(tool.transform.position.x, tool.transform.position.y - 1.2f, 0);
+        tool.transform.DOMove(new Vector3(tool.transform.position.x, tool.transform.position.y - 1.2f, 0),1);
     }
     void Update()
     {
@@ -64,7 +66,7 @@ public class PrepareInput : MonoBehaviour
     {
         if (numOfMaterial < 0) numOfMaterial = 2;
         if (numOfMaterial > 2) numOfMaterial = 0;
-        BottleChoose(obj[numOfMaterial]);
+        
     }//检测数字处于0-2之间
 
     void CheckInput()
@@ -105,7 +107,6 @@ public class PrepareInput : MonoBehaviour
                 }
             }
         }
-        else ToolMove();
     }//对输入进行判断，包括ad与j
 
     void ChangeScene()
@@ -120,12 +121,13 @@ public class PrepareInput : MonoBehaviour
     void BottleChoose(GameObject obj)
     {
         isMoving = true;
-        obj.transform.position = new Vector3(obj.transform.position.x, obj.transform.position.y + .5f, 0);
+        obj.transform.DOMove(new Vector3(obj.transform.position.x, obj.transform.position.y + .5f, 0), 1);
+
     }
 
     void RestorePosition(GameObject obj)
     {
-        obj.transform.position = new Vector3(obj.transform.position.x, obj.transform.position.y - .5f, 0);
+        obj.transform.DOMove(new Vector3(obj.transform.position.x, obj.transform.position.y - .5f, 0),1);
     }
 
     void ChangeBottle(int num)
@@ -133,21 +135,17 @@ public class PrepareInput : MonoBehaviour
         RestorePosition(obj[numOfMaterial]);
         numOfMaterial += num;
         CheckNum();
-        tool.transform.position = new Vector3(tool.transform.position.x, tool.transform.position.y +1.2f, 0);
+        BottleChoose(obj[numOfMaterial]);
         isMoving = true;
+        ToolMove();
     }
 
     void ToolMove()
     {
-        Vector3 newPosition = tool.transform.position + new Vector3(obj[numOfMaterial].transform.position.x - tool.transform.position.x, 0, 0);
-        Vector3 velocity = Vector3.zero;
-        tool.transform.position = Vector3.SmoothDamp(tool.transform.position, newPosition, ref velocity, .05f);
-        if (Vector3.Distance(tool.transform.position, newPosition) < 0.05)
-        {
-            isMoving = false;
-            tool.transform.position = new Vector3(tool.transform.position.x, tool.transform.position.y - 1.2f, 0);
-        }
-
-        }
-
+        tool.transform.DOMove(new Vector3(obj[numOfMaterial].transform.position.x, tool.transform.position.y + 1.2f, 0),1)
+                 .OnComplete(() => {
+                     tool.transform.DOMove(new Vector3(tool.transform.position.x, tool.transform.position.y - 1.2f, 0), 1);
+                     isMoving = false;
+                 });
+    }
 }
