@@ -54,7 +54,7 @@ public class PrepareInput : MonoBehaviour
         }
         BottleChoose(obj[numOfMaterial]);
         isMoving = false;
-        tool.transform.position = new Vector3(tool.transform.position.x, tool.transform.position.y - 1.2f, 0);
+        tool.transform.DOMove(new Vector3(tool.transform.position.x, tool.transform.position.y - 1.2f, 0),1);
     }
     void Update()
     {
@@ -66,7 +66,7 @@ public class PrepareInput : MonoBehaviour
     {
         if (numOfMaterial < 0) numOfMaterial = 2;
         if (numOfMaterial > 2) numOfMaterial = 0;
-        BottleChoose(obj[numOfMaterial]);
+        
     }//检测数字处于0-2之间
 
     void CheckInput()
@@ -107,7 +107,6 @@ public class PrepareInput : MonoBehaviour
                 }
             }
         }
-        else ToolMove();
     }//对输入进行判断，包括ad与j
 
     void ChangeScene()
@@ -122,12 +121,13 @@ public class PrepareInput : MonoBehaviour
     void BottleChoose(GameObject obj)
     {
         isMoving = true;
-        obj.transform.position = new Vector3(obj.transform.position.x, obj.transform.position.y + .5f, 0);
+        obj.transform.DOMove(new Vector3(obj.transform.position.x, obj.transform.position.y + .5f, 0), 1);
+
     }
 
     void RestorePosition(GameObject obj)
     {
-        obj.transform.position = new Vector3(obj.transform.position.x, obj.transform.position.y - .5f, 0);
+        obj.transform.DOMove(new Vector3(obj.transform.position.x, obj.transform.position.y - .5f, 0),1);
     }
 
     void ChangeBottle(int num)
@@ -135,12 +135,14 @@ public class PrepareInput : MonoBehaviour
         RestorePosition(obj[numOfMaterial]);
         numOfMaterial += num;
         CheckNum();
-        tool.transform.position = new Vector3(tool.transform.position.x, tool.transform.position.y +1.2f, 0);
+        BottleChoose(obj[numOfMaterial]);
         isMoving = true;
+        ToolMove();
     }
 
     void ToolMove()
     {
+<<<<<<< HEAD
         Vector3 newPosition = tool.transform.position + new Vector3(obj[numOfMaterial].transform.position.x - tool.transform.position.x, 0, 0);
         Vector3 velocity = Vector3.zero;
         tool.transform.position = Vector3.SmoothDamp(tool.transform.position, newPosition, ref velocity, .05f);
@@ -152,4 +154,12 @@ public class PrepareInput : MonoBehaviour
 
     }
 
+=======
+        tool.transform.DOMove(new Vector3(obj[numOfMaterial].transform.position.x, tool.transform.position.y + 1.2f, 0),1)
+                 .OnComplete(() => {
+                     tool.transform.DOMove(new Vector3(tool.transform.position.x, tool.transform.position.y - 1.2f, 0), 1);
+                     isMoving = false;
+                 });
+    }
+>>>>>>> b0b5c010edc851338dce91c4bd3963f0f289728c
 }
