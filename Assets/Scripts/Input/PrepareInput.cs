@@ -28,12 +28,17 @@ public class PrepareInput : MonoBehaviour
     [SerializeField] private GameObject xijiejing2;
     private GameObject[] obj = new GameObject[3];
 
+    [SerializeField]private AudioSource au;
+
     [SerializeField] private GameObject tool;
     private bool isMoving;
+
+    private GameObject music;
 
 
     void Start()
     {
+        music = GameObject.Find("music");
         prepareInput = GetComponent<PrepareInput>();//获取玩家键盘输入
         numOfMaterial = 0;//通过0-2控制蘸取的液体
         prepareInput.enabled = true;
@@ -88,6 +93,7 @@ public class PrepareInput : MonoBehaviour
                 Square.sizeDelta = new Vector2(sum * 2.78f, 20);
 
                 text.text = ((int)sum).ToString() + "/100";
+                au.Play();
 
                 if (time >= sumoftime)
                     prepareInput.enabled = false;
@@ -115,6 +121,7 @@ public class PrepareInput : MonoBehaviour
         {
             SceneManager.LoadScene("Make");
             DontDestroyOnLoad(prepareInput);
+            DontDestroyOnLoad(music);
         }
     }
 
@@ -132,6 +139,7 @@ public class PrepareInput : MonoBehaviour
 
     void ChangeBottle(int num)
     {
+        au.Stop();
         RestorePosition(obj[numOfMaterial]);
         numOfMaterial += num;
         CheckNum();
@@ -142,24 +150,10 @@ public class PrepareInput : MonoBehaviour
 
     void ToolMove()
     {
-<<<<<<< HEAD
-        Vector3 newPosition = tool.transform.position + new Vector3(obj[numOfMaterial].transform.position.x - tool.transform.position.x, 0, 0);
-        Vector3 velocity = Vector3.zero;
-        tool.transform.position = Vector3.SmoothDamp(tool.transform.position, newPosition, ref velocity, .05f);
-        if (Vector3.Distance(tool.transform.position, newPosition) < 0.05)
-        {
-            isMoving = false;
-            tool.transform.position = new Vector3(tool.transform.position.x, tool.transform.position.y - 1.2f, 0);
-        }
-
-    }
-
-=======
         tool.transform.DOMove(new Vector3(obj[numOfMaterial].transform.position.x, tool.transform.position.y + 1.2f, 0),1)
                  .OnComplete(() => {
                      tool.transform.DOMove(new Vector3(tool.transform.position.x, tool.transform.position.y - 1.2f, 0), 1);
                      isMoving = false;
                  });
     }
->>>>>>> b0b5c010edc851338dce91c4bd3963f0f289728c
 }
