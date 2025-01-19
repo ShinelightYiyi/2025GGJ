@@ -34,6 +34,11 @@ public class MakeInput : MonoBehaviour
     private float color;
     [SerializeField] Animator anim;
 
+    [Header("Audio Info")]
+    [SerializeField] private AudioSource inhaleAudio;
+    [SerializeField] private AudioSource blowAudio;
+    [SerializeField] private AudioSource bubbleAudio;
+
     private PrepareInput lastInput;
     private float[] floats;
 
@@ -65,6 +70,7 @@ public class MakeInput : MonoBehaviour
 
             currentAir += (Time.deltaTime /proportion);
             SpriteScaled();
+            inhaleAudio.Play();
 
             if (currentAir > 60)//超过60递减
             {
@@ -94,6 +100,8 @@ public class MakeInput : MonoBehaviour
         {
             Debug.Log(inhaledAir-currentAir);
             currentAir -= Time.deltaTime*.5f/proportion;
+
+            blowAudio.Play();
             if(currentAir <= 0)//没气就不准吹了
             {
                 makeInput.enabled = false;
@@ -103,12 +111,16 @@ public class MakeInput : MonoBehaviour
             {
                 //播放破裂动画
                 inhaledAir -= max;
+                blowAudio.Stop();
             }
         }else if (Keyboard.current.spaceKey.wasReleasedThisFrame &&inhaledAir-currentAir>min)
         {
             //播放动画
+            blowAudio.Stop();
+            bubbleAudio.Play();
             anim.SetTrigger("Blow");
             inhaledAir = currentAir;
+            bubbleAudio.Stop();
         } 
     }
 
@@ -172,6 +184,7 @@ public class MakeInput : MonoBehaviour
     {
         GameObject.Find("Inhale").SetActive(false);//吸气结束关闭吸气的gameobject
         Blow.SetActive(true);
+        inhaleAudio.Stop();
 
         time = 0;
     }

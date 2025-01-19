@@ -28,12 +28,17 @@ public class PrepareInput : MonoBehaviour
     [SerializeField] private GameObject xijiejing2;
     private GameObject[] obj = new GameObject[3];
 
+    [SerializeField]private AudioSource au;
+
     [SerializeField] private GameObject tool;
     private bool isMoving;
+
+    private GameObject music;
 
 
     void Start()
     {
+        music = GameObject.Find("music");
         prepareInput = GetComponent<PrepareInput>();//获取玩家键盘输入
         numOfMaterial = 0;//通过0-2控制蘸取的液体
         prepareInput.enabled = true;
@@ -88,6 +93,7 @@ public class PrepareInput : MonoBehaviour
                 Square.sizeDelta = new Vector2(sum * 2.78f, 20);
 
                 text.text = ((int)sum).ToString() + "/100";
+                au.Play();
 
                 if (time >= sumoftime)
                     prepareInput.enabled = false;
@@ -115,6 +121,7 @@ public class PrepareInput : MonoBehaviour
         {
             SceneManager.LoadScene("Make");
             DontDestroyOnLoad(prepareInput);
+            DontDestroyOnLoad(music);
         }
     }
 
@@ -132,6 +139,7 @@ public class PrepareInput : MonoBehaviour
 
     void ChangeBottle(int num)
     {
+        au.Stop();
         RestorePosition(obj[numOfMaterial]);
         numOfMaterial += num;
         CheckNum();
