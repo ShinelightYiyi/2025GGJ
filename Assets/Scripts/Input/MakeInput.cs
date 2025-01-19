@@ -92,7 +92,8 @@ public class MakeInput : MonoBehaviour
     {
         if (Keyboard.current.spaceKey.isPressed)
         {
-            currentAir -= Time.deltaTime/proportion;
+            Debug.Log(inhaledAir-currentAir);
+            currentAir -= Time.deltaTime*.5f/proportion;
             if(currentAir <= 0)//没气就不准吹了
             {
                 makeInput.enabled = false;
@@ -106,6 +107,7 @@ public class MakeInput : MonoBehaviour
         }else if (Keyboard.current.spaceKey.wasReleasedThisFrame &&inhaledAir-currentAir>min)
         {
             //播放动画
+            anim.SetTrigger("Blow");
             inhaledAir = currentAir;
         } 
     }
