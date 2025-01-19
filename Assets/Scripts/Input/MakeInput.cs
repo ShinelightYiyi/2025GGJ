@@ -16,7 +16,7 @@ public class MakeInput : MonoBehaviour
     [SerializeField]private float declineSpeed;//口腔空气减少速度，应该大于增加速度？
     private float time;
     private bool isInhaled;
-    [SerializeField] private GameObject sprite;//两个半圆弧？
+    [SerializeField] private GameObject inhaleSprite;//两个半圆弧？
 
     [Header("Blow Info")]
     private float inhaledAir = 100;//吸入的空气
@@ -62,27 +62,28 @@ public class MakeInput : MonoBehaviour
         if (Keyboard.current.spaceKey.isPressed)
         {
             Debug.Log(currentAir);
+
             currentAir += (Time.deltaTime /proportion);
+            SpriteScaled();
 
             if (currentAir > 60)//超过60递减
             {
                 time += Time.deltaTime;
                 currentAir -= time*0.001f/proportion;
+
             }
             else time = 0;
 
             if (currentAir >= maxAir)
             {   //强制退出吸气
                 isInhaled = true;
-                GameObject.Find("Inhale").SetActive(false);//吸气结束关闭吸气的gameobject
-                Blow.SetActive(true);
+                ChangePeriod();
             }
 
         }else if (Keyboard.current.spaceKey.wasReleasedThisFrame)//松开空格退出吸气
         {
             isInhaled = true;
-            GameObject.Find("Inhale").SetActive(false);//吸气结束关闭吸气的gameobject
-            Blow.SetActive(true);
+            ChangePeriod();
             inhaledAir =currentAir;
         }
     }
@@ -127,11 +128,8 @@ public class MakeInput : MonoBehaviour
 
     void SpriteScaled()//准备写半圆弧缩放，变化速度直接用time操控，和proportion分离开
     {
-        if (isInhaled)
-        {
-            GameObject.Find("Inhale").SetActive(false);//吸气结束关闭吸气的gameobject
-            GameObject.Find("Blow").SetActive(true);//启动吹气
-        }
+        float pro=currentAir/maxAir;//表现大小
+       inhaleSprite.transform.localScale=new Vector3(pro*.7f+.2f, pro * .7f + .2f, pro * .7f + .2f);
     }
 
     void BubbleProperties()
@@ -166,6 +164,14 @@ public class MakeInput : MonoBehaviour
                 max = 70;
                 break;
         }
+    }
+
+    void ChangePeriod()
+    {
+        GameObject.Find("Inhale").SetActive(false);//吸气结束关闭吸气的gameobject
+        Blow.SetActive(true);
+
+        time = 0;
     }
 
 }
