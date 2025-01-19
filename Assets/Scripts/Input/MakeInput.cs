@@ -28,6 +28,7 @@ public class MakeInput : MonoBehaviour
     private float max;
 
     [Header("Bubble Info")]
+    [SerializeField] private GameObject Blow;
     private float difficulty;
     private float weight;
     private float color;
@@ -42,6 +43,7 @@ public class MakeInput : MonoBehaviour
         lastInput =GameObject.Find("PrepareInput").GetComponent<PrepareInput>();
         isInhaled = false;//吸过没
         BubbleProperties();//获得weight,color
+        Blow.SetActive(false);
 
         //将参数和这里的weight,color联系起来
     }
@@ -72,12 +74,16 @@ public class MakeInput : MonoBehaviour
             if (currentAir >= maxAir)
             {   //强制退出吸气
                 isInhaled = true;
+                GameObject.Find("Inhale").SetActive(false);//吸气结束关闭吸气的gameobject
+                Blow.SetActive(true);
             }
 
         }else if (Keyboard.current.spaceKey.wasReleasedThisFrame)//松开空格退出吸气
         {
             isInhaled = true;
-            inhaledAir=currentAir;
+            GameObject.Find("Inhale").SetActive(false);//吸气结束关闭吸气的gameobject
+            Blow.SetActive(true);
+            inhaledAir =currentAir;
         }
     }
 
@@ -89,6 +95,7 @@ public class MakeInput : MonoBehaviour
             if(currentAir <= 0)//没气就不准吹了
             {
                 makeInput.enabled = false;
+                return;
             }
             if (inhaledAir - currentAir > max)
             {
@@ -98,6 +105,7 @@ public class MakeInput : MonoBehaviour
         }else if (Keyboard.current.spaceKey.wasReleasedThisFrame &&inhaledAir-currentAir>min)
         {
             //播放动画
+            inhaledAir = currentAir;
         } 
     }
 
@@ -119,7 +127,11 @@ public class MakeInput : MonoBehaviour
 
     void SpriteScaled()//准备写半圆弧缩放，变化速度直接用time操控，和proportion分离开
     {
-
+        if (isInhaled)
+        {
+            GameObject.Find("Inhale").SetActive(false);//吸气结束关闭吸气的gameobject
+            GameObject.Find("Blow").SetActive(true);//启动吹气
+        }
     }
 
     void BubbleProperties()

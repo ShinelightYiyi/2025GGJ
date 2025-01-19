@@ -315,7 +315,8 @@ MonoBehaviour:
   moveSpeed: 1
   tool: {fileID: 1589109677}
   mouth: {fileID: 154100417}
-  anim: {fileID: 0}
+  Blow: {fileID: 415067023}
+  anim: {fileID: 2137446199}
 --- !u!1 &154100417
 GameObject:
   m_ObjectHideFlags: 0
