@@ -142,10 +142,24 @@ public class PrepareInput : MonoBehaviour
 
     void ToolMove()
     {
+<<<<<<< HEAD
         tool.transform.DOMove(new Vector3(obj[numOfMaterial].transform.position.x, tool.transform.position.y + 1.2f, 0),1)
                  .OnComplete(() => {
                      tool.transform.DOMove(new Vector3(tool.transform.position.x, tool.transform.position.y - 1.2f, 0), 1);
                      isMoving = false;
                  });
     }
+=======
+        Vector3 newPosition = tool.transform.position + new Vector3(obj[numOfMaterial].transform.position.x - tool.transform.position.x, 0, 0);
+        Vector3 velocity = Vector3.zero;
+        tool.transform.position = Vector3.SmoothDamp(tool.transform.position, newPosition, ref velocity, .05f);
+        if (Vector3.Distance(tool.transform.position, newPosition) < 0.05)
+        {
+            isMoving = false;
+            tool.transform.position = new Vector3(tool.transform.position.x, tool.transform.position.y - 1.2f, 0);
+        }
+
+    }
+
+>>>>>>> 3665ac5c933a34798b2caa6f13d2c8180842ea51
 }
