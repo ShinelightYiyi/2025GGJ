@@ -118,7 +118,7 @@ public class MakeInput : MonoBehaviour
             //²¥·Å¶¯»­
             blowAudio.Stop();
             bubbleAudio.Play();
-            anim.SetTrigger("Blow");
+            AnimationTrigger();
             inhaledAir = currentAir;
             bubbleAudio.Stop();
         } 
@@ -187,6 +187,22 @@ public class MakeInput : MonoBehaviour
         inhaleAudio.Stop();
 
         time = 0;
+    }
+
+    void AnimationTrigger()
+    {
+        switch (color)
+        {
+            case 0:
+                anim.SetTrigger("Blow");
+                break;
+            case 1:
+                anim.SetTrigger("Rainbow");
+                break;
+            case 2:
+                anim.SetTrigger("Foam");
+                break;
+        }
     }
 
 }
