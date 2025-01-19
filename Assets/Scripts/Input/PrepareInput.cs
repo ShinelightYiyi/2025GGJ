@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class PrepareInput : MonoBehaviour
 {
@@ -29,6 +30,7 @@ public class PrepareInput : MonoBehaviour
 
     [SerializeField] private GameObject tool;
     private bool isMoving;
+
 
     void Start()
     {
@@ -148,6 +150,6 @@ public class PrepareInput : MonoBehaviour
             tool.transform.position = new Vector3(tool.transform.position.x, tool.transform.position.y - 1.2f, 0);
         }
 
-        }
+    }
 
 }
